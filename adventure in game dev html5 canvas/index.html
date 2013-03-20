@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Adventures in Game Dev with HTML5 Canvas - davetayls</title>
+
+		<meta name="description" content="Adventures in Game Dev with HTML5 Canvas">
+		<meta name="author" content="Dave Taylor">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="../reveal/css/reveal.min.css">
+		<link rel="stylesheet" href="../reveal/css/theme/simple.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="../reveal/lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="../reveal/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="../reveal/lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+        <style>
+            body {
+                background: url(../common/pogokid.png) no-repeat 1% 98%;
+            }
+            .reveal code {
+                max-height: 600px;
+            }
+        </style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+    <section>
+        <h2>Adventures in game dev</h2>
+        <div>
+            <i>
+            <font face="georgia">with HTML5 Canvas</font>
+        </i>
+    </div>
+    <div>
+        <i>
+        <font face="georgia">
+            <br>
+        </font>
+    </i>
+</div>
+<p>
+<font face="arial">@davetayls</font>
+</p>
+<p>
+<font face="arial">
+    <br>
+</font>
+<font face="arial">I work at Pogo Kid</font>
+</p>
+</section>
+<section>
+    <h2>Be a sucker for a challenge</h2>
+    <div>
+        <font face="georgia">
+            <i>... there's always an adventure in it</i>
+        </font>
+    </div>
+</section>
+<section>
+
+
+
+
+
+
+
+
+
+
+    <section>
+        <h2>Frame</h2>
+        <p>
+        <i>
+        <font face="georgia">the controller</font>
+    </i>
+</p>
+<div>
+    <br>
+</div>
+<div>two timing loops</div>
+<div>
+    <ol>
+        <li>game logic</li>
+        <li>drawing</li>
+    </ol>
+</div>
+<div>
+    <br>
+</div>
+</section>
+
+
+
+
+
+
+
+
+<section>
+    <h2>
+        <br>
+    </h2>
+    <h2>Game logic frame</h2>
+    <div>
+        <i>
+        <font face="georgia">setTimeout ~ 60 frames per second</font>
+    </i>
+</div>
+<div>
+    <br>
+</div>
+<div>Use a self calling function</div>
+<div>
+    <br>
+</div>
+<pre><code>
+  function logicFrame(){
+    // update players position, listen for collisions etc
+
+    // process the game logic at a target of 60fps
+    setTimeout(logicFrame, 1000/60);
+  }
+
+</code></pre>
+<p>
+<br>
+</p>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<section>
+        <h2>
+    <br>
+</h2>
+<h2>Draw frame</h2>
+<div>
+    <i>
+    <font face="georgia">requestAnimationFrame</font>
+    </i>
+</div>
+<div>
+<br>
+</div>
+<pre><code>
+  function drawFrame(){
+    // kick ass circles and squares
+
+    window.requestAnimationFrame(drawFrame);
+  }
+
+</code></pre>
+<p>
+<br>
+</p>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section>
+    <h2>
+    <br>
+</h2>
+<h2>requestAnimationFrame</h2>
+<p>
+<font face="georgia">
+    <i>the browser can optimise concurrent animations<br>
+</i>
+</font>
+<font face="georgia">
+    <i>together into a single reflow and repaint cycle
+</i>
+</font>
+</p>
+<div>
+    <br>
+</div>
+<div>
+    <ul>
+        <li>offload animation timing to the browser</li>
+        <li>higher fidelity (sync with monitor)</li>
+        <li>save's battery (doesn't run when tab not focused)</li>
+        <li>use the rAF shim</li>
+    </ul>
+</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+</section>
+<section>
+
+
+
+
+
+
+
+
+
+
+    <section>
+<h2>Step</h2>
+<div>
+    <i>
+    <font face="georgia">the commander</font>
+</i>
+</div>
+<p>
+        <font face="arial">
+            <br>
+        </font>
+    </p>
+    <p>
+    <span style="font-family: arial; text-align: left; letter-spacing: -0.02em;">takes the current state and applies</span>
+    <br>
+</p>
+<p>
+<ul>
+    <li>
+        <font face="arial">interactions</font>
+    </li>
+    <li>
+        <font face="arial">time based logic</font>
+    </li>
+</ul>
+<font face="arial">
+    <br>
+</font>
+</p>
+<p>
+<font face="arial">
+    <br>
+</font>
+</p>
+<p>
+<font face="arial">moves a ship / fires a bullet</font>
+</p>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section>
+    <h2>Ship</h2>
+    <div>
+        <br>
+    </div>
+<pre><code>
+    function Ship(){...}
+    Ship.prototype = {
+
+      // we need to be able to position it
+      x:0, y:0, w:28, h:16
+
+      // it needs to do stuff
+      shoot: function(){...}
+      jumpLeft: function(){...}
+      jumpRight: function(){...}
+
+      // we need to see it
+      draw: function(){
+        this.sprite.draw(0, this.x, this.y);
+      }
+    };
+
+</code></pre>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+<section>
+    <h2>Invader</h2>
+<pre><code>
+    function Invader(){...}
+    Invader.prototype = {
+
+      // we need to be able to position it
+      x:0, y:0, w:28, h:16,
+
+      // how eeeeeeevil is this invader?
+      isHit: false, // not at all if it's hit
+      points: 10,   // more points for tougher invaders
+
+      // it needs to do stuff
+      checkHit: function(x, y){
+        if (distance(this.x, this.y, x, y) &lt; 10){
+          this.isHit = true; // KAPOOOOOWWWWW
+        }
+      },
+
+      // we need to see it
+      draw: function(){
+        this.sprite.draw(0, this.x, this.y);
+      }
+    };
+
+</code></pre>
+</section>
+    <section>
+        <h2>
+            <br>
+        </h2>
+        <h2>
+            <br>
+        </h2>
+        <h2>Collisions</h2>
+        <div>
+            <i>
+            <font face="georgia">can be an utter headache</font>
+        </i>
+    </div>
+</section>
+<section>
+    <h2>
+    </h2>
+<h2 style="font-style: normal; font-variant: normal;">
+        <img src="https://docs.google.com/drawings/d/1SlVMmUN8FjEpX67vEpvCW4AVc6HFgWwp99_-4L_DwKo/pub?w=960&amp;amp;h=720" style="letter-spacing: -0.02em;">
+    </h2>
+
+
+</section>
+    <section>
+        <h2>
+            <img src="https://docs.google.com/drawings/d/1OHkoghVJxjO-TcI9wjoUp_iihbz4jAb5I0gyTrNKQWA/pub?w=960&amp;amp;h=720">
+            <br>
+        </h2>
+    </section>
+    <section>
+    <img style="width:100%" src="https://lh5.googleusercontent.com/-Dn1NqmUcy7k/USKXMsE08jI/AAAAAAAAuvA/VlfdV8B2No0/s800/racer-hit-detect.png">
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <section>
+        <h2>
+            <br>
+        </h2>
+        <h2>
+            <br>
+        </h2>
+        <h2>Controllers</h2>
+<div>
+    <i>
+    <font face="georgia">keyboard, mouse, touch, gestures...</font>
+    </i>
+</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section>
+    <p>
+    <span style="font-family: arial; line-height: 1.2em; letter-spacing: -0.02em;">keep state</span>
+</p>
+<div>
+    <i>
+    <font face="georgia">
+
+    </font>
+</i>
+</div>
+
+<div>
+<pre><code>
+    shootKey = {
+      keyCode: 32, // space
+      down: false    };
+
+    window.addEventListener('keydown', function(e){
+      if (shootKey.keyCode === e.which){
+        shootKey.down = true;
+        e.preventDefault();
+      }
+    });
+
+</code></pre>
+</div>
+<div>
+<span style="letter-spacing: -0.02em;">and then use it</span>
+<br>
+</div>
+<pre><code>
+    function logicFrame(){
+      if (shootKey.down){
+    // trigger shot!
+      }
+    // other game logic
+      setTimeout(logicFrame, 1000/60);
+    }
+
+</code></pre>
+</section>
+<section>
+    <h2>Controller Sources</h2>
+    <div>
+        <br>
+    </div>
+    <div>By triggering actions within the logic frame tick<br>based on state allows you to use other<br>sources for your controllers<br>
+        <br>They just need to be able to tell the game<br>what state they are in</div>
+    </section>
+    <section>
+        <h2>
+            <br>
+        </h2>
+        <h2>
+            <br>
+        </h2>
+        <h2>Game states</h2>
+        <div>
+            <i>
+            <font face="georgia">a game is not a game<br>if you can't win, lose or draw</font>
+        </i>
+    </div>
+</section>
+</section>
+<section>
+    <section>
+        <h2>Draw</h2>
+        <div>
+            <i>
+            <font face="georgia">the still life painter</font>
+        </i>
+    </div>
+</section>
+<section>
+    <h2>Canvas</h2>
+    <div>a few basic tasks</div>
+    <div>
+        <br>
+    </div>
+    <div>
+        <ol>
+            <li>We're using 2d context</li>
+            <li>clear the previous frame</li>
+            <li>Go through each of the objects<br>on stage and...</li>
+            <li>
+                <font face="courier new" color="#000099">
+                    <b>draw</b>
+                    </font>()<br>fillStyle, font, fillRect, fillText<br>drawImage</li>
+                </ol>
+            </div>
+        </section>
+
+
+
+
+
+
+<section>
+<h2>A bit of code</h2>
+<div>
+    <br>
+</div>
+<pre><code>
+    &lt;canvas id="canvas" width="500" height="500"&gt;&lt;/canvas&gt;
+
+</code></pre>
+<pre><code>
+    var canvas = document.getElementById('canvas'),
+      context = canvas.getContext('2d')
+    ;
+
+</code></pre>
+<pre><code>
+    context.clearRect(0, 0, w, h);
+    context.fillStyle = '#000';
+    context.fillRect(0,0,w,h);
+
+</code></pre>
+</section>
+
+
+
+
+
+
+
+            <section>
+                <h2>
+    <br>
+</h2>
+<h2>2d Games&nbsp;♥ Sprites</h2>
+<div>
+    <br>
+</div>
+<div>
+    <img src="https://lh5.googleusercontent.com/-L7XZyn0ojmY/UR_zzxmC4uI/AAAAAAAAuuY/Q6oPrwMXri8/s800/drawingsprites.png">
+    <br>
+</div>
+
+
+
+
+
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+                <section>
+                    <h2>drawImage</h2>
+<pre><code>
+    var img = new Image();
+    img.src = 'http://the-taylors.org/space-invaders/sprites.png';
+
+</code></pre>
+<pre><code>
+    var spriteWidth = 350,
+      spriteHeight  = 170,
+      pixelsLeft    = 170,
+      pixelsTop     = 10,
+
+      // Where are we going to draw
+      // the sprite on the canvas      canvasPosX    = 20,
+      canvasPosY    = 20
+    ;
+    context.drawImage(img,
+      pixelsLeft,   pixelsTop,
+      spriteWidth,  spriteHeight,
+      canvasPosX,   canvasPosY,
+      spriteWidth,  spriteHeight
+    );
+
+</code></pre>
+</section>
+
+
+
+
+
+<section>
+<h2>Reusable Class</h2>
+<pre><code>
+    function Sprite(img, width, height, positions){
+      this.img = img;
+      this.width = width; this.height = height;
+      this.positions = positions;
+    }
+
+</code></pre>
+<pre><code>
+    Sprite.prototype = {
+      draw: function(position, x, y){
+          var pos = this.positions[position];
+          context.drawImage(
+            this.img,
+            pos[0], pos[1], // xy position of sprite
+            this.width, this.height,
+            x, y            // xy position to draw on canvas
+            this.width, this.height
+          );
+        }
+    };
+
+</code></pre>
+</section>
+
+
+
+
+
+<section>
+    <h2>Reusable Class</h2>
+    <div>
+        <img src="invaders.png" alt="">
+    </div>
+    <pre><code>
+        var sprite = new Sprite(img, 32, 16, [
+            // specify a few sprite locations
+            [10, 523],  // green
+            [131, 523], // pink
+            [191, 523]  // hit
+        ]);
+        sprite.draw(0, 10, 200);
+        sprite.draw(1, 50, 200);
+        sprite.draw(2, 90, 200);
+    </code></pre>
+</section>
+                        </section>
+                        <section>
+                            <h2>
+                                <br>
+                            </h2>
+                            <h2>Let's play already!</h2>
+                            <div>
+                                <img src="http://i.imgur.com/k46QFvn.png">
+                                <br>
+                            </div>
+                            <div>http://bit.ly/YThJIE</div>
+                        </section>
+
+
+
+
+
+
+
+
+
+<section>
+<h2>Your challenge...</h2>
+<div>
+    <i>
+    <font face="georgia">fork the repo and make the invaders fight back</font>
+</i>
+</div>
+<div>
+<br>
+</div>
+<div>http://github.com/davetayls</div>
+<div>http://twitter.com/davetayls</div>
+<div>
+<br>
+</div>
+<div>
+    <img height="300" src="space invaders.jpg" alt="">
+</div>
+</section>
+
+
+
+
+
+
+
+
+
+
+                </div>
+
+			</div>
+
+
+		<script src="../reveal/lib/js/head.min.js"></script>
+		<script src="../reveal/js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: '../reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: '../reveal/plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../reveal/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: '../reveal/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: '../reveal/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+					// { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+					{ src: '../reveal/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList && Reveal.getQueryHash().remote; } }
+				]
+			});
+
+            console.log(Reveal.getQueryHash());
+
+		</script>
+
+	</body>
+</html>
