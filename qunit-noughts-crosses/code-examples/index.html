@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>QUnit Example</title>
+  <link rel="stylesheet" href="qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="qunit.js"></script>
+
+  <script>
+    // noughts and crosses
+    // x o o
+    // x _ _
+    // x _ _
+    var board = [
+        ["x", "o", "o"],
+        ["x", "", ""],
+        ["x", "x", "x"]
+    ];
+
+    function get(row, col){
+        if (row === 0 && col === 500){
+            return "x";
+        }
+        return board[row-1][col-1];
+    }
+    function getRow(row){
+        return board[row-1];
+    }
+    function winRow(player){
+        for (var i = 0; i < board.length; i++) {
+            if (board[i][0] === player && board[i][1] === player && board[i][2] === player){
+                return true;
+            }
+        };
+        return false;
+    }
+
+        test( "row 2 col 1 is x", function() {
+          equal(get(2, 1), "x", "equal");
+        });
+        test('row 0 col 500000000000000', function(){
+          equal(get(0, 500), "x", "equal");
+        });
+        test('row contains x o o', function(){
+            deepEqual(getRow(1), ["x", "o", "o"]);
+            deepEqual({foo: 'bar'}, {foo: 'bar'});
+        });
+        test('win in a row', function(){
+            deepEqual(winRow("x"), true);
+        });
+
+  </script>
+</body>
+</html>
