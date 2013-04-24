@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Knockout JS example</title>
+    </head>
+    <body>
+        <h1>Knockout JS example</h1>
+
+
+        <!-- Let's look at a basic View Model -->
+        <h2>Basic View Model</h2>
+        <div id="liveExample" class="liveExample">
+            <p>
+            Choose a ticket class:
+            <select data-bind="options: tickets,
+                               optionsCaption: 'Choose...',
+                               optionsText: 'name',
+                               value: chosenTicket"></select>
+
+            <input type="text" data-bind="value: firstName" value="" />
+
+            <button data-bind="enable: chosenTicket,
+                               click: resetTicket">Clear</button>
+            </p>
+            <p data-bind="slideVisible: showName">
+                Hello <b data-bind="text: fullName"></b>
+            </p>
+            <p data-bind="with: chosenTicket">
+                You have chosen <b data-bind="text: name"></b>
+                ($<span data-bind="text: price"></span>)
+            </p>
+
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+            <script src="knockout.js"></script>
+            <script type="text/javascript">
+
+                // custom binding handlers
+                ko.bindingHandlers.slideVisible = {
+                    update: function(element, valueAccessor, allBindingsAccessor) {
+                        // First get the latest data that we're bound to
+                        var value = valueAccessor(), allBindings = allBindingsAccessor();
+
+                        // Next, whether or not the supplied model property is observable, get its current value
+                        var valueUnwrapped = ko.utils.unwrapObservable(value);
+
+                        // Grab some more data from another binding property
+                        var duration = allBindings.slideDuration || 400; // 400ms is default duration unless otherwise specified
+
+                        // Now manipulate the DOM element
+                        if (valueUnwrapped == true)
+                            $(element).slideDown(duration); // Make the element visible
+                        else
+                            $(element).slideUp(duration);   // Make the element invisible
+                    }
+                };
+
+
+
+                function TicketsViewModel() {
+                    this.tickets = [
+                        { name: "Economy", price: 199.95 },
+                        { name: "Business", price: 449.22 },
+                        { name: "First Class", price: 1199.99 }
+                    ];
+                    this.firstName = ko.observable('bob');
+                    this.lastName = ko.observable('martin');
+                    this.fullName = ko.computed(function(){
+                        return this.firstName() + ' '+ this.lastName();
+                    }, this);
+
+                    this.showName = ko.observable(true);
+                    this.chosenTicket = ko.observable();
+                    this.resetTicket = function() { this.chosenTicket(null) }
+                }
+                var viewModel = new TicketsViewModel();
+                ko.applyBindings(viewModel, document.getElementById("liveExample"));
+            </script>
+            <script>
+                // listening to property changes
+                /*
+
+                _foo = 'bar';
+                var foo = function(val){
+                    if (val){
+                        _foo = val;
+                        trigger('changed')
+                    } else {
+                        return _foo;
+                    }
+                };
+
+                alert( foo() );
+                foo('baz');
+                alert( foo() );
+
+
+
+                var props = {
+                    foo: 'bar',
+                    get: function(prop){
+                        return this[prop];
+                    },
+                    set: function(prop, val){
+                        this[prop] = val;
+                        this.trigger('change');
+                        return this.get(prop);
+                    },
+                    trigger: function(event){
+                        //...
+                    }
+                };
+
+
+                alert(props.get('foo'));
+                props.set('foo', 'baz');
+                alert(props.get('foo')); // -> 'baz'
+
+    */
+
+
+
+
+
+
+
+
+
+            </script>
+        </div>
+
+
+    </body>
+</html>
