@@ -30,9 +30,6 @@
 		<![endif]-->
 
 		<style>
-			body {
-				background: url(../common/pogokid.png) no-repeat 1% 98%;
-			}
 			.reveal section {
 				letter-spacing: -0.05em;
 			}
@@ -57,6 +54,15 @@
 			.reveal .pogokid {
 				font-family: boris, Arial Black;
 			}
+			.pogokid-logo {
+				position: absolute;
+				bottom: 3%;
+				left: 1%;
+				width: 80px;
+				height: 80px;
+				background: url(../common/pogokid.png) no-repeat 1% 98%;
+				background-size: 100%;
+			}
 		</style>
 	</head>
 
@@ -67,6 +73,7 @@
 				{{ content }}
 			</div>
 		</div>
+		<div class="pogokid-logo"></div>
 		<script src="../reveal/lib/js/head.min.js"></script>
 		<script src="../reveal/js/reveal.min.js"></script>
 		<script>
@@ -79,13 +86,13 @@
 				history: true,
 				center: true,
 
-				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				theme: '{{ page.theme }}' || Reveal.getQueryHash().theme, // available themes are in /css/theme
 				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
 
 				// Optional libraries used to extend on reveal.js
 				dependencies: [
 					{ src: '../reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: '../reveal/plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: '../reveal/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 					{ src: '../reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 					{ src: '../reveal/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
 					{ src: '../reveal/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
