@@ -10,6 +10,15 @@
         <!-- Let's look at a basic View Model -->
         <h2>Basic View Model</h2>
         <div id="liveExample" class="liveExample">
+            <p style="position: fixed; top: 0; left: 0;background: red;">hello <span data-bind="text: fullName"></span></p>
+
+            <h2>Your ticket options are:</h2>
+            <ul>
+                <li>ticket 1</li>
+                <li>ticket 2</li>
+                <li></li>
+            </ul>
+
             <p>
             Choose a ticket class:
             <select data-bind="options: tickets,
@@ -18,6 +27,7 @@
                                value: chosenTicket"></select>
 
             <input type="text" data-bind="value: firstName" value="" />
+            <input type="text" data-bind="hydratevalue: middleName" value="james" />
 
             <button data-bind="enable: chosenTicket,
                                click: resetTicket">Clear</button>
@@ -35,6 +45,11 @@
             <script type="text/javascript">
 
                 // custom binding handlers
+                // data-bind="..."
+                // slideVisible: true
+                // slideVisible: 'hello'
+                // slideVisible: showName
+                // slideVisible: firstName === 'bob'
                 ko.bindingHandlers.slideVisible = {
                     update: function(element, valueAccessor, allBindingsAccessor) {
                         // First get the latest data that we're bound to
@@ -54,8 +69,35 @@
                     }
                 };
 
+                /**
+                 * Custom binding which populates the model with the original
+                 * value of the element
+                 */
+                ko.bindingHandlers.hydratevalue = {
+                    init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                        var $element = $(element),
+                            hydrate = true;
+
+                        // only hydrate if a checkbox is checked
+                        if (element.type === "checkbox" && !$element.is(':checked')){
+                            hydrate = false;
+                        }
+
+                        if (hydrate){
+                            var observable = valueAccessor();
+                            observable($element.val());
+                        }
+                        ko.bindingHandlers.value.init(element, valueAccessor, allBindingsAccessor, bindingContext);
+                    },
+                    update: ko.bindingHandlers.value.update
+                };
 
 
+
+                function Ticket(){
+                    this.name = name;
+                    this.price = price;
+                }
                 function TicketsViewModel() {
                     this.tickets = [
                         { name: "Economy", price: 199.95 },
@@ -64,12 +106,18 @@
                     ];
                     this.firstName = ko.observable('bob');
                     this.lastName = ko.observable('martin');
-                    this.fullName = ko.computed(function(){
-                        return this.firstName() + ' '+ this.lastName();
-                    }, this);
-
                     this.showName = ko.observable(true);
                     this.chosenTicket = ko.observable();
+                    this.middleName   = ko.observable('graham');
+
+                    this.fullName = ko.computed(function(){
+                        return [
+                            this.firstName(),
+                            this.middleName(),
+                            this.lastName(),
+                            ].join(' ');
+                    }, this);
+
                     this.resetTicket = function() { this.chosenTicket(null) }
                 }
                 var viewModel = new TicketsViewModel();
