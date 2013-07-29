@@ -2,7 +2,7 @@
 title: Intro to ThreeJS
 subtitle: and HTML5 Audio
 layout: master
-description: Unit testing with QUnit
+description:
 titlebg: 3.jpg
 theme: night
 ---
@@ -40,8 +40,8 @@ theme: night
 <section data-markdown data-separator="---" data-background="3.jpg">
 
 ## Let's build a cube
-3 simple components which help us understand what an object
-looks like.
+3 simple components which help us understand
+what an object looks like.
 
 1. It's wireframe **Geometry**
 2. What kind of **Material** is stretched across it
@@ -51,6 +51,13 @@ looks like.
 <section data-markdown data-separator="---" data-background="3.jpg">
 
 ## Geometry
+
+    new THREE.CubeGeometry(
+        100, 100, 100, // width, height, depth
+        2,   // width segments
+        2,   // height segments
+        2    // depth segments
+    ),
 
 </section>
 <section data-markdown data-separator="---" data-background="3.jpg">
