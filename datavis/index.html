@@ -44,6 +44,7 @@ theme: night
  - load an audio file in to an audio element
  - load an audio file in to a buffer
  - create waves with oscillators
+ - connect an audio stream from a microphone
 
 
 ---
@@ -59,15 +60,65 @@ Give it a src:
 
     audio.src = 'joining-the-dots.mp3';
 
-</section>
-
-<section data-markdown data-separator="---" data-background="3.jpg">
+---
 
 ## Have a listen
 
 [Play Simple Audio element](code-examples/play-audio-element.html)
 
-</a>
+---
+
+## What about from a buffer?
+
+We are able to load sound using xhr or via a microphone
+and connect it
+
+---
+
+## Creating waves with Oscillators
+
+First we need a context.
+
+Our Oscillator can be created out of the context.
+
+We then just need to connect up the wires
+to our end destination (speakers).
+
+    var context = new webkitAudioContext();
+    var oscillator = context.createOscillator();
+    oscillator.connect(context.destination);
+
+---
+
+---
+
+## What waves can we create?
+
+Using the `type` property we have 4 options.
+
+![oscillator types](waves.jpg)
+
+0: Sine, 1: Square, 2: Triangle, 3: Sawtooth
+
+*[image courtesy of Stuart Memo](http://stuartmemo.com/making-sine-square-sawtooth-and-triangle-waves/)*
+
+---
+
+## I want to play a tune
+
+Ok, so you can then set the frequency of the wave.
+
+    oscillator.type = 0;
+    oscillator.frequency.value = 440; // A
+
+[Here these in action](code-examples/oscillator.html)
+
+---
+
+## HTML5 Synth
+
+http://stuartmemo.com/synth/
+
 
 </section>
 
@@ -194,3 +245,16 @@ Just map the spectrum with time
 
 
 
+
+<section>
+
+
+<section data-markdown data-separator="---" data-background="3.jpg">
+
+## Resources
+
+- http://stuartmemo.com
+
+</section>
+
+</section>

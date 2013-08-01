@@ -18,25 +18,23 @@
         <script contenteditable>
 
 
+        var context = new webkitAudioContext();
+        var oscillator = context.createOscillator();
+        oscillator.connect(context.destination);
 
+        oscillator.type = 0;
+        oscillator.start(0);
 
-var context = new webkitAudioContext();
-var oscillator = context.createOscillator();
+        setInterval(function(){
+          oscillator.frequency.value+=1;
+          if (oscillator.frequency.value > 1000){
+            oscillator.frequency.value = 100
+          }
+        }, 10);
 
-oscillator.connect(context.destination);
-oscillator.type = 0;
-oscillator.start(0);
-
-setInterval(function(){
-  oscillator.frequency.value+=1;
-  if (oscillator.frequency.value > 1000){
-    oscillator.frequency.value = 100
-  }
-}, 10);
-
-setInterval(function(){
-  oscillator.type = Math.floor(Math.random()*4);
-}, 1000);
+        setInterval(function(){
+          oscillator.type = Math.floor(Math.random()*4);
+        }, 1000);
 
 
 
