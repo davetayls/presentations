@@ -1,17 +1,88 @@
 ---
-title: Data Vis
-subtitle: with HTML5 Audio
+title: Flight of the Audio Visualator
+subtitle: starring HTML5 Audio and Three.js
 layout: master
 description:
-titlebg: 3.jpg
 theme: night
 ---
+
+<style>
+    h1, h2, h3, p {
+        text-shadow: 0 0 5px #000 !important;
+    }
+    #bg-iframe {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<script>
+    var iframe = document.createElement('iframe');
+    iframe.id = 'bg-iframe';
+    iframe.src = 'http://localhost:3000/visualiser/22';
+    document.body.appendChild(iframe);
+
+    // the context
+    var context = new window.webkitAudioContext();
+
+    // analyser can give details about the frequencies
+    var analyser = context.createAnalyser();
+    analyser.smoothingTimeConstant = 0.3;
+    analyser.fftSize = 1024;
+
+    // javascriptNode allows us to do something in a bit like a frame
+    var javascriptNode = context.createJavaScriptNode(2048, 1, 1);
+    javascriptNode.connect(context.destination);
+
+    var t;
+    function next() {
+        clearTimeout(t);
+        t = setTimeout(function(){
+            Reveal.next();
+        }, 100);
+    }
+
+    javascriptNode.onaudioprocess = function(){
+        // get average vol
+        var frequenciesArr = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(frequenciesArr);
+        var average = getAverageVolume(Array.prototype.slice.call(frequenciesArr, 0, 200));
+        if (average > 150){
+            console.log(average);
+            next();
+        }
+    };
+    function getAverageVolume(arr) {
+        var values = 0, length = arr.length;
+        for (var i=0; i < length; i++){
+            values+=arr[i];
+        }
+        return values/length;
+    }
+
+    navigator.webkitGetUserMedia({audio: true}, function(stream) {
+
+        var microphone = context.createMediaStreamSource(stream);
+        // microphone -> analyser -> process
+        microphone.connect(analyser);
+        analyser.connect(javascriptNode);
+        // microphone.connect(context.destination);
+
+
+    }, function(){
+        alert('Something went wrong');
+    });
+
+</script>
 
 {% include slide-title.html %}
 
 <section>
 
-<section data-markdown data-separator="---" data-background="3.jpg">
+<section data-markdown data-separator="---">
 
 ## A whole new world of sound
 
@@ -37,7 +108,7 @@ theme: night
 
 <section>
 
-<section data-markdown data-separator="---" data-background="3.jpg">
+<section data-markdown data-separator="---">
 
 ## The Source
 
@@ -128,6 +199,21 @@ http://stuartmemo.com/synth/
 
 
 
+<!-- THE DRAG -->
+<section>
+
+<section data-markdown data-separator="---">
+
+## The Drag
+
+In this visualiser I used the file API to allow an mp3 to be dragged
+on to the page.
+
+This is how this works.
+
+</section>
+
+</section>
 
 
 
@@ -148,7 +234,7 @@ http://stuartmemo.com/synth/
 <!-- THE DESTINATION -->
 <section>
 
-<section data-markdown data-separator="---" data-background="3.jpg">
+<section data-markdown data-separator="---">
 
 ## The Destination
 
@@ -184,7 +270,7 @@ http://stuartmemo.com/synth/
 <section>
 
 
-<section data-markdown data-separator="---" data-background="3.jpg">
+<section data-markdown data-separator="---">
 
 ## The Playground
 
@@ -249,7 +335,12 @@ Just map the spectrum with time
 <section>
 
 
-<section data-markdown data-separator="---" data-background="3.jpg">
+<section data-markdown data-separator="---">
+
+## What are people creating
+
+ - Synth
+ - Drum machine
 
 ## Resources
 

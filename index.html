@@ -1,3 +1,8 @@
+---
+title: Presentations
+layout: nil
+---
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,8 +13,9 @@
     <h1>Presentations</h1>
     <p>Here are a few of my presentations</p>
     <ul>
-        <li> <a href="adventure-game-dev-html5-canvas/index.html">Adventures in Game Dev with HTML5 Canvas</a> </li>
-        <li> <a href="qunit-noughts-crosses/index.html">QUnit Noughts and Crosses</a> </li>
+        {% for post in site.posts %}
+        <li> <a href="{{ post.url }}">{{ post.title }}</a> </li>
+        {% endfor %}
     </ul>
 </body>
 </html>

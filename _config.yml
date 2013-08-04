@@ -1,9 +1,8 @@
 auto: true
 lsi: false
 live: true
-permalink: /blog/:year-:month-:day/:title
+permalink: /:year/:title
 exclude:
-- startjekyll.bat
 - node_modules
 - package.json
 - grunt.js
