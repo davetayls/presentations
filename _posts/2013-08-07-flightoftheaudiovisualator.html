@@ -50,7 +50,7 @@ theme: night
         var frequenciesArr = new Uint8Array(analyser.frequencyBinCount);
         analyser.getByteFrequencyData(frequenciesArr);
         var average = getAverageVolume(Array.prototype.slice.call(frequenciesArr, 0, 200));
-        if (average > 150){
+        if (average > 165){
             console.log(average);
             next();
         }
@@ -64,14 +64,10 @@ theme: night
     }
 
     navigator.webkitGetUserMedia({audio: true}, function(stream) {
-
         var microphone = context.createMediaStreamSource(stream);
-        // microphone -> analyser -> process
         microphone.connect(analyser);
         analyser.connect(javascriptNode);
         // microphone.connect(context.destination);
-
-
     }, function(){
         alert('Something went wrong');
     });
@@ -137,7 +133,6 @@ visualisation.
  - create waves with oscillators
  - connect an audio stream from a microphone
 
-
 ---
 
 ## Load an mp3 file into an Audio element
@@ -159,6 +154,16 @@ Give it a src:
 
 ---
 
+## The Stack
+
+The `AudioContext` is much like a guitar effects
+board.
+
+![connect](connect.png)
+
+Each "effect" on the board can connect to the next
+
+---
 
 ## Creating waves with Oscillators
 
@@ -169,11 +174,9 @@ Our Oscillator can be created out of the context.
 We then just need to connect up the wires
 to our end destination (speakers).
 
-    var context = new webkitAudioContext();
+    var context = new AudioContext();
     var oscillator = context.createOscillator();
     oscillator.connect(context.destination);
-
----
 
 ---
 
@@ -208,8 +211,18 @@ http://stuartmemo.com/synth/
 
 ## Hooking up a microphone using `getUserMedia`
 
-We are able to load sound using xhr or via a microphone
-and connect it
+    navigator.getUserMedia({audio: true},
+      function(stream) {
+        var microphone
+          = context.createMediaStreamSource(stream);
+        microphone.connect(analyser);
+        analyser.connect(javascriptNode);
+        microphone.connect(context.destination);
+      }, function(){
+        throw new Error('Something went wrong');
+      }
+    );
+
 
 </section>
 
@@ -219,21 +232,49 @@ and connect it
 
 
 
-<!-- THE DRAG -->
 <section>
 
 <section data-markdown data-separator="---">
 
-## The Drag
+## The Analyser
 
-A big part of our
+The core of our site was analysing the audio frequencies
 
+![spectrum](spectrum.png)
 
 ---
-In this visualiser I used the file API to allow an mp3 to be dragged
-on to the page.
 
-This is how this works.
+## How we react to the frequenices
+
+ - Listen for average and max volume over particular
+   frequencies
+ - If low frequency band is above a trigger level
+   extra visual boost is applied
+ - Size of the spheres corresponds to levels at each
+   band
+ - State of last band saved to give history through
+   the cube
+ - We also use perlin noise function to gradually
+   cycle through colours
+
+---
+
+## Getting the frequencies from the context
+
+Analyser splits up the signal into frequency buckets
+
+    analyser = context.createAnalyser();
+    analyser.smoothingTimeConstant=0.3;
+    analyser.fftSize=1024;
+
+Process the audio after frames have been sampled
+
+    javascriptNode.onaudioprocess = function(){
+      var frequencies
+        = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(frequencies);
+    }
+
 
 </section>
 
@@ -252,19 +293,6 @@ This is how this works.
 
 
 
-
-
-
-<!-- THE DESTINATION -->
-<section>
-
-<section data-markdown data-separator="---">
-
-## The Destination
-
-</section>
-
-</section>
 
 
 
@@ -298,34 +326,35 @@ This is how this works.
 
 ## The Playground
 
-<http://localhost:3000/audio-spectrum>
-<http://localhost:3000/tones/1>
+http://localhost:3000/tones/1
+
+http://localhost:3000/audio-spectrum
 
 ---
 
 ## Visualiser
 
 Just map the spectrum with time
-<http://localhost:3000/visualiser/2>
+http://localhost:3000/visualiser/2
 
 ---
 
 ## Spider thing
-<http://localhost:3000/visualiser/3>
+http://localhost:3000/visualiser/3
 
 ---
 
 ## Find some camera angles
-<http://localhost:3000/visualiser/14>
+http://localhost:3000/visualiser/14
 
 ## Noise and Interpolation
-<http://localhost/davetayls/teststation/creative-js/grapher/noise.html>
-<http://localhost/davetayls/teststation/creative-js/grapher/interpolation.html>
+http://localhost/davetayls/teststation/creative-js/grapher/noise.html
+http://localhost/davetayls/teststation/creative-js/grapher/interpolation.html
 
 ---
 
 ## Animate them
-<http://localhost:3000/visualiser/15>
+http://localhost:3000/visualiser/15
 
 ---
 
@@ -333,7 +362,7 @@ Just map the spectrum with time
  - drag an mp3
  - animation and flights
  - narratives
-<http://localhost:3000/visualiser/20>
+http://localhost:3000/visualiser/20
 
 
 
@@ -363,13 +392,49 @@ Just map the spectrum with time
 
 ## What are people creating
 
- - Synth
- - Drum machine
+Synths, Drum machines, Games, Instruments, Songs,
+and more and more
 
-## Resources
+We've got so many tools to be creative in the browser!
 
+---
+
+## Questions and Resources
+
+[@davetayls](http://twitter.com/davetayls) on twitter and happy to chat
+
+http://davetayls.me - I'll put slides up soon
+
+- http://unitedstudioslive.com
 - http://stuartmemo.com
+- http://stuartmemo.com/making-sine-square-sawtooth-and-triangle-waves/
+- http://www.smartjava.org/content/exploring-html5-web-audio-visualizing-sound
+- http://www.html5rocks.com/en/tutorials/webaudio/intro/
+- http://www.html5rocks.com/en/tutorials/getusermedia/intro/
 
 </section>
 
 </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

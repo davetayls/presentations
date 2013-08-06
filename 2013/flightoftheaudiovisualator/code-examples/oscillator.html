@@ -32,8 +32,10 @@
           }
         }, 10);
 
+        var type = 0;
         setInterval(function(){
-          oscillator.type = Math.floor(Math.random()*4);
+            type = type >= 3 ? 0 : type+1;
+            oscillator.type = type;
         }, 1000);
 
 
