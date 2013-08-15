@@ -4,39 +4,52 @@
         <title>Simple Play Mp3</title>
         <style type="text/css">
 
-        script {
-            border: solid 1px #ccc;
-            display: block;
-            white-space: pre;
-            font-family: monospace;
+        body {
+            font-family: sans-serif;
+            background: #000;
+            color: #fff;
+            text-align: center;
         }
-
         </style>
     </head>
     <body>
-        <h1>Simple Play Mp3</h1>
-        <script contenteditable>
+        <h1>Click to play</h1>
+        <script>
 
-
+        var playing = false;
+        var tF, tT;
         var context = new webkitAudioContext();
         var oscillator = context.createOscillator();
-        oscillator.connect(context.destination);
+        document.addEventListener('click', function(){
+            if (!playing){
+                oscillator.connect(context.destination);
 
-        oscillator.type = 0;
-        oscillator.start(0);
+                oscillator.type = 0;
+                oscillator.start(0);
 
-        setInterval(function(){
-          oscillator.frequency.value+=1;
-          if (oscillator.frequency.value > 1000){
-            oscillator.frequency.value = 100
-          }
-        }, 10);
+                tF = setInterval(function(){
+                  oscillator.frequency.value+=1;
+                  if (oscillator.frequency.value > 1000){
+                    oscillator.frequency.value = 100
+                  }
+                }, 10);
 
-        var type = 0;
-        setInterval(function(){
-            type = type >= 3 ? 0 : type+1;
-            oscillator.type = type;
-        }, 1000);
+                var type = 0;
+                tT = setInterval(function(){
+                    type = type >= 3 ? 0 : type+1;
+                    oscillator.type = type;
+                }, 1000);
+                playing = true;
+            } else {
+                clearInterval(tF);
+                clearInterval(tT);
+                oscillator.stop(0);
+            }
+
+
+            return false;
+        });
+
 
 
 
