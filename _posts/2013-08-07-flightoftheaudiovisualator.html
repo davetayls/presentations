@@ -7,72 +7,13 @@ theme: night
 ---
 
 <style>
+    body {
+        background: #0a152c;
+    }
     h1, h2, h3, p {
         text-shadow: 0 0 5px #000 !important;
     }
-    #bg-iframe {
-        position: absolute;
-        z-index: -1;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
 </style>
-<script>
-    var iframe = document.createElement('iframe');
-    iframe.id = 'bg-iframe';
-    iframe.src = 'http://localhost:3000/visualiser/22';
-    document.body.appendChild(iframe);
-
-    // the context
-    var context = new window.webkitAudioContext();
-
-    // analyser can give details about the frequencies
-    var analyser = context.createAnalyser();
-    analyser.smoothingTimeConstant = 0.3;
-    analyser.fftSize = 1024;
-
-    // javascriptNode allows us to do something in a bit like a frame
-    var javascriptNode = context.createJavaScriptNode(2048, 1, 1);
-    javascriptNode.connect(context.destination);
-
-    var t;
-    function next() {
-        clearTimeout(t);
-        t = setTimeout(function(){
-            Reveal.next();
-        }, 100);
-    }
-
-    javascriptNode.onaudioprocess = function(){
-        // get average vol
-        var frequenciesArr = new Uint8Array(analyser.frequencyBinCount);
-        analyser.getByteFrequencyData(frequenciesArr);
-        var average = getAverageVolume(Array.prototype.slice.call(frequenciesArr, 0, 200));
-        if (average > 165){
-            console.log(average);
-            next();
-        }
-    };
-    function getAverageVolume(arr) {
-        var values = 0, length = arr.length;
-        for (var i=0; i < length; i++){
-            values+=arr[i];
-        }
-        return values/length;
-    }
-
-    navigator.webkitGetUserMedia({audio: true}, function(stream) {
-        var microphone = context.createMediaStreamSource(stream);
-        microphone.connect(analyser);
-        analyser.connect(javascriptNode);
-        // microphone.connect(context.destination);
-    }, function(){
-        alert('Something went wrong');
-    });
-
-</script>
 
 {% include slide-title.html %}
 
@@ -102,8 +43,10 @@ http://unitedstudioslive.com
 Massively requested feature to spotify is audio
 visualisation.
 
-</section>
-<section data-background="2013-unitedstudioslive.png">
+---
+
+![United Studios Live](2013-unitedstudioslive.png)
+
 </section>
 
 </section>
