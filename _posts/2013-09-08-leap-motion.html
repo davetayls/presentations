@@ -1,0 +1,200 @@
+---
+title: Leap Motion
+subtitle: Workshop
+layout: master
+description:
+---
+
+{% include slide-title.html %}
+
+<section>
+<section data-markdown data-separator="---">
+
+## JavaScript
+
+Leap Motion JavaScript support has two main components.
+
+1. WebSocket server (JSON-formatted messages)
+2. JavaScript client library, Leap.js
+
+---
+
+## Coordinate System
+
+![axes](leap_axes.png)
+
+ - real world units (millimeters)
+
+</section>
+</section>
+
+
+
+
+
+
+
+
+
+<section>
+<section data-markdown data-separator="---">
+
+## Frames and data
+
+ - sends a frame of data up to 60 frames per second
+ - tracks hands, fingers, tools and gestures
+ - elements are assigned a unique id for as long as they are in view
+
+---
+
+## Lists of tracking data in a frame
+
+ - Hands — All hands.
+ - Pointables — All fingers and tools as Pointable objects.
+ - Fingers — All the fingers.
+ - Tools — All the tools.
+ - Gestures — All the gestures that started, ended, or which had an update.
+
+---
+
+## Motion and Frame Motion
+
+You get factors based on however many hands detected
+in the view.
+
+ - translation
+ - rotation
+ - scale
+
+For the frame this means you don't have to track hands individually.
+
+</section>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<section>
+<section data-markdown data-separator="---">
+
+## Hand
+
+ - `palmPosition` — The center of the palm measured in millimeters from the Leap origin.
+ - `palmVelocity` — The speed of the palm in millimeters per second.
+ - `palmNormal` — A vector perpendicular to the plane formed by the palm of the hand. The vector points downward out of the palm.
+ - `direction` — A vector pointing from the center of the palm toward the fingers.
+
+---
+
+## Hand Sphere
+
+![hand sphere](leap_hand_ball.png)
+
+ - `sphereCenter` — The center of a sphere fit to the curvature of the hand (as if it were holding a ball).
+ - `sphereRadius` — The radius of a sphere fit to the curvature of the hand. The radius changes with the shape of the hand.
+
+</section>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+<section>
+<section data-markdown data-separator="---">
+
+## Pointables (Fingers and Tools)
+
+ - `length` — The length of the visible portion of the object (from where it extends out of the hand to the tip).
+ - `width` — The average width of the visible portion of the object.
+ - `direction` — A unit direction vector pointing in the same direction as the object (i.e. from base to tip).
+ - `tipPosition` — The position of the tip in millimeters from the Leap origin.
+ - `tipVelocity` — The speed of the tip in millimeters per second.
+
+</section>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<section>
+<section data-markdown data-separator="---">
+
+## Gestures and Taps
+
+For each gesture observed, the Leap adds a Gesture object to the
+frame. You can get these Gesture objects from the Frame `gestures` list.
+
+ - Circle — A single finger tracing a circle.
+ - Swipe — A linear movement of the hand.
+ - Key Tap — A tapping movement by a finger as if tapping a keyboard key.
+ - Screen Tap — A tapping movement by the finger as if tapping a vertical computer screen.
+
+
+</section>
+</section>
+
+
+
+<section>
+<section data-markdown data-separator="---">
+
+## leap.js
+
+
+---
+
+## Creating the Frame loop
+
+    Leap.loop(function(frame){
+        // frame.hands
+        // frame.fingers
+        // frame.tools
+        // frame.gestures
+    });
+
+[dumper](code-examples/leapjs/examples/dumper.html)
+
+---
+
+## Download
+
+http://davetayls.me/presentations/2013/leap-motion/code-examples.zip
+
+</section>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
