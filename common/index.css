@@ -1,0 +1,51 @@
+.reveal section {
+  letter-spacing: -0.05em;
+}
+
+.reveal pre {
+  font-size: 1em;
+}
+
+.reveal pre code {
+  max-height: 600px;
+  padding: 20px;
+}
+
+.reveal em,
+.reveal strong {
+  font-family: georgia, sans-serif;
+  font-style: italic;
+  letter-spacing: -0.06em;
+}
+
+.reveal .title {
+  padding-bottom: 48px;
+}
+
+.reveal .title--main h3 {
+  font-size: 0.857142857143em;
+  font-style: italic;
+  font-family: georgia;
+}
+
+.reveal .pogokid {
+  font-family: boris, Arial Black;
+}
+
+.pogokid-logo {
+  font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  color: #aaa;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  padding-left: 100px;
+  width: 180px;
+  height: 80px;
+  background: #fff url(../../common/pogokid.png) no-repeat 1% 98%;
+  background-size: auto 80px;
+  z-index: 100;
+}
+.pogokid-logo a {
+  color: #aaa;
+}

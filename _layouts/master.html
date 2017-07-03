@@ -1,114 +1,105 @@
 <!doctype html>
 <html lang="en">
 
-	<head>
-		<meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
 
-		<title>{{ page.title }}</title>
+    <title>{{ page.title }}</title>
 
-		<meta name="description" content="{{ page.description }}">
-		<meta name="author" content="Dave Taylor">
+    <meta name="description" content="{{ page.description }}">
+    <meta name="author" content="Dave Taylor">
 
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="../../reveal/css/reveal.min.css">
-		<link rel="stylesheet" href="../../reveal/css/theme/simple.css" id="theme">
+    <link rel="stylesheet" href="../../reveal/css/reveal.min.css">
+    <link rel="stylesheet" href="../../reveal/css/theme/simple.css" id="theme">
 
-		<!-- For syntax highlighting -->
-		<link rel="stylesheet" href="../../reveal/lib/css/zenburn.css">
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="../../reveal/lib/css/zenburn.css">
 
-		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
-		<script>
-			document.write( '<link rel="stylesheet" href="../../reveal/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
-		</script>
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+      document.write('<link rel="stylesheet" href="../../reveal/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
+    </script>
 
-		<!--[if lt IE 9]>
-		<script src="../../reveal/lib/js/html5shiv.js"></script>
-		<![endif]-->
+    <!--[if lt IE 9]>
+    <script src="../../reveal/lib/js/html5shiv.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="../../common/index.css">
+  </head>
 
-		<style>
-			.reveal section {
-				letter-spacing: -0.05em;
-			}
-			.reveal pre {
-				font-size: 1em;
-			}
-			.reveal pre code {
-				max-height: 600px;
-				padding: 20px;
-			}
-			.reveal em,
-			.reveal strong {
-				font-family: georgia, sans-serif;
-				font-style: italic;
-				letter-spacing: -0.06em;
-			}
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        {{ content }}
+      </div>
+    </div>
+    <div class="pogokid-logo">
+      <h1>Dave Taylor (<a href="http://davetayls.me">davetayls.me</a>)</h1>
+    </div>
+    <script src="../../reveal/lib/js/head.min.js"></script>
+    <script src="../../reveal/js/reveal.min.js"></script>
+    <script>
 
-			.reveal .title {
-				padding-bottom: 48px;
-			}
-			.reveal .title--main h3 {
-				font-size: 0.857142857143em;
-				font-style: italic;
-				font-family: georgia;
-			}
-			.reveal .pogokid {
-				font-family: boris, Arial Black;
-			}
-			.pogokid-logo {
-				position: absolute;
-				bottom: 3%;
-				left: 1%;
-				width: 80px;
-				height: 80px;
-				background: url(../../common/pogokid.png) no-repeat 1% 98%;
-				background-size: 100%;
-			}
-		</style>
-	</head>
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
 
-	<body>
-		<div class="reveal">
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-				{{ content }}
-			</div>
-		</div>
-		<div class="pogokid-logo"></div>
-		<script src="../../reveal/lib/js/head.min.js"></script>
-		<script src="../../reveal/js/reveal.min.js"></script>
-		<script>
+        theme: '{{ page.theme }}' || Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
 
-			// Full list of configuration options available here:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          {
+            src: '../../reveal/lib/js/classList.js', condition: function() {
+            return !document.body.classList;
+          }
+          },
+          {
+            src: '../../reveal/plugin/markdown/marked.js', condition: function() {
+            return !!document.querySelector('[data-markdown]');
+          }
+          },
+          {
+            src: '../../reveal/plugin/markdown/markdown.js', condition: function() {
+            return !!document.querySelector('[data-markdown]');
+          }
+          },
+          {
+            src: '../../reveal/plugin/highlight/highlight.js', async: true, callback: function() {
+            hljs.initHighlightingOnLoad();
+          }
+          },
+          {
+            src: '../../reveal/plugin/zoom-js/zoom.js', async: true, condition: function() {
+            return !!document.body.classList;
+          }
+          },
+          {
+            src: '../../reveal/plugin/notes/notes.js', async: true, condition: function() {
+            return !!document.body.classList;
+          }
+          },
+          // { src: '../../reveal/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+          {
+            src: '../../reveal/plugin/remotes/remotes.js', async: true, condition: function() {
+            return !!document.body.classList && Reveal.getQueryHash().remote;
+          }
+          }
+        ]
+      });
 
-				theme: '{{ page.theme }}' || Reveal.getQueryHash().theme, // available themes are in /css/theme
-				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+      console.log(Reveal.getQueryHash());
 
-				// Optional libraries used to extend on reveal.js
-				dependencies: [
-					{ src: '../../reveal/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: '../../reveal/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: '../../reveal/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: '../../reveal/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: '../../reveal/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-					{ src: '../../reveal/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
-					// { src: '../../reveal/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
-					{ src: '../../reveal/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList && Reveal.getQueryHash().remote; } }
-				]
-			});
+    </script>
 
-			console.log(Reveal.getQueryHash());
-
-		</script>
-
-	</body>
+  </body>
 </html>

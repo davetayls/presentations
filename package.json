@@ -1,0 +1,19 @@
+{
+  "name": "@davetayls/presentations",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "jekyll": "jekyll serve --drafts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davetayls/presentations.git"
+  },
+  "author": "Dave Taylor (davetayls.me)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davetayls/presentations/issues"
+  },
+  "homepage": "https://github.com/davetayls/presentations#readme"
+}
