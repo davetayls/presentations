@@ -1,0 +1,234 @@
+---
+title: Progressive Web Apps
+subtitle: a swift tour
+layout: master
+description: A whistle stop tour of progressive web apps
+theme: night
+---
+
+<section data-background="1.jpg">
+  <div class="title title--main">
+    <h2>{{ page.title }}</h2>
+    {% if page.subtitle %}
+    <h3>{{ page.subtitle }}</h3>
+    {% endif %}
+    <p>
+      <img class="logo-image" src="/common/pogokid-emblem-with-name-on-dark@100px.png" alt="Pogo Kid" height="80">
+      <img class="logo-image" src="/common/seccl.png" alt="Pogo Kid" height="80">
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="">
+
+## A few things have changed
+
+### We now know ...
+
+---
+
+## 1. Most people only install apps when they buy their phone
+
+---
+
+## 2. Most people only use common apps and no other
+
+---
+
+## 3. The web platform has now got APIs for previously native-only features
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="">
+
+## Best of the Web, and best of apps
+
+  1. Reliability
+
+  Integral code installed on the device
+
+  2. Speed
+
+  Fast Startup, customisable cacheing and offline
+
+  3. User Engagement
+
+  Traditionally native app features like push notifications and GPS
+
+  4. Integrated
+
+  Shows on the home screen and loading as a full-screen app
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="2.jpg">
+
+## Let's consider a few situations
+
+---
+
+## The train journey ...
+
+Content doesn't know about network service
+
+---
+
+## I use this every day ...
+
+Home screen visibility and easy access is important
+
+---
+
+## Mobile Data is Expensive ...
+
+Download on WiFi, experience offline
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="">
+
+## Secure
+
+Progressive Web Apps can only be run and installed over a secure connection
+
+Service workers work like a proxy and can completely change the response to any request
+
+This makes sure that any service worker that gets installed hasn't been tampered with
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="">
+
+## Service Workers
+
+Control how requests are routed. Sit between browser and server.
+
+They don't rely on the website being open, you can define what events wake it up
+
+Push messages can wake up a service worker
+
+Limited to scope dictated by the folder the file is in
+
+---
+
+```
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('/sw.js')
+    .then(function() {
+      console.log('Service Worker Registered');
+    });
+}
+```
+---
+
+```
+var cacheName = 'myApp-v1';
+self.addEventListener('install', function(e) {
+  console.log('[ServiceWorker] Install');
+  e.waitUntil(
+    caches.open(cacheName).then(function(cache) {
+      console.log('[ServiceWorker] Caching app shell');
+      return cache.addAll(filesToCache);
+    });
+  );
+});
+```
+
+---
+
+```
+var filesToCache = [
+  '/',
+  '/index.html',
+  '/scripts/app.js'
+];
+```
+
+---
+
+```
+self.addEventListener('fetch', function(e) {
+  console.log('[ServiceWorker] Fetch', e.request.url);
+  e.respondWith(
+    caches.match(e.request).then(function(response) {
+      return response || fetch(e.request);
+    })
+  );
+});
+```
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="">
+
+## Manifest
+
+Control how app appears to the user on the phone
+
+Control how the app launches
+
+Android will automatically detect a PWA and notify the user they can add it to their home screen
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="">
+
+## App Shell
+
+The minimal amount of code needed to show meaningful content to the user
+
+This can also include cached data saved inside a local database
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="">
+
+![udacity](udacity.png)
+
+## Support
+
+  https://www.udacity.com/course/intro-to-progressive-web-apps--ud811
+
+</section>
+</section>
+
+
+
+
+
+
+
+
+

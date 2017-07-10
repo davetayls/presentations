@@ -32,20 +32,36 @@
   font-family: boris, Arial Black;
 }
 
+.reveal .logo-image {
+  background: none;
+  border: none;
+  display: inline-block;
+  margin: 100px 0 0;
+}
+
+.reveal .logo-image + .logo-image {
+  margin-left: 40px;
+}
+
 .pogokid-logo {
   font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
-  font-size: 10px;
-  color: #aaa;
+  font-size: 16px;
+  color: #fff;
   position: absolute;
-  bottom: 10px;
+  bottom: 0;
   left: 0;
-  padding-left: 100px;
-  width: 180px;
-  height: 80px;
-  background: #fff url(../../common/pogokid.png) no-repeat 1% 98%;
-  background-size: auto 80px;
+  padding-left: 4em;
+  /*width: 280px;*/
+  background: #000 url(../../common/pogokid-on-dark.png) no-repeat 1% 98%;
+  background-size: auto 90%;
   z-index: 100;
 }
+.pogokid-logo h1 {
+  text-shadow: none !important;
+  font-size: 1em;
+  margin: 1em 1em 1em 0;
+  white-space: nowrap;
+}
 .pogokid-logo a {
-  color: #aaa;
+  color: inherit;
 }
