@@ -18,6 +18,27 @@
   letter-spacing: -0.06em;
 }
 
+.reveal h1,
+.reveal h2 {
+  text-shadow: 0 0 2px #000,
+    0 0 2px #000,
+    0 0 2px #000,
+    0 0 2px #000;
+}
+
+.reveal ul li {
+  list-style: none outside none;
+  text-align: center;
+}
+
+.reveal ul li:before {
+  content: '🔸';
+  display: block;
+}
+.reveal ul li:first-child:before {
+  display: none;
+}
+
 .reveal .title {
   padding-bottom: 48px;
 }
@@ -35,6 +56,7 @@
 .reveal .logo-image {
   background: none;
   border: none;
+  box-shadow: none;
   display: inline-block;
   margin: 100px 0 0;
 }

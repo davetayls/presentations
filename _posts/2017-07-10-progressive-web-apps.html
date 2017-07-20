@@ -13,7 +13,7 @@ theme: night
     <h3>{{ page.subtitle }}</h3>
     {% endif %}
     <p>
-      <img class="logo-image" src="../../common/pogokid-emblem-with-name-on-dark@100px.png" alt="Pogo Kid" height="80">
+      <img class="logo-image" src="../../common/pogokid-emblem-with-name-on-light@100px.png" alt="Pogo Kid" height="80">
       <img class="logo-image" src="../../common/seccl.png" alt="Pogo Kid" height="80">
     </p>
   </div>
@@ -22,7 +22,7 @@ theme: night
 <!-- =========================================================== -->
 
 <section>
-<section data-markdown data-separator="---" data-background="">
+<section data-markdown data-separator="---" data-background="1.jpg">
 
 ## A few things have changed
 
@@ -46,53 +46,33 @@ theme: night
 <!-- =========================================================== -->
 
 <section>
-<section data-markdown data-separator="---" data-background="">
-
-## Best of the Web, and best of apps
-
-  1. Reliability
-
-  Integral code installed on the device
-
-  2. Speed
-
-  Fast Startup, customisable cacheing and offline
-
-  3. User Engagement
-
-  Traditionally native app features like push notifications and GPS
-
-  4. Integrated
-
-  Shows on the home screen and loading as a full-screen app
-
-</section>
-</section>
-
-<!-- =========================================================== -->
-
-<section>
-<section data-markdown data-separator="---" data-background="2.jpg">
+<section data-markdown data-separator="---" data-background="1.jpg">
 
 ## Let's consider a few situations
 
 ---
 
-## The train journey ...
+## The train journey
 
 Content doesn't know about network service
 
+Speed - Intermittent - Offline
+
 ---
 
-## I use this every day ...
+## I use this every day
 
 Home screen visibility and easy access is important
 
+Engagement - Visibility - Convenience
+
 ---
 
-## Mobile Data is Expensive ...
+## Mobile Data is Expensive, Money and Time
 
 Download on WiFi, experience offline
+
+Other Countries - £££ Expensive Data - ⏰ 2G Connections
 
 </section>
 </section>
@@ -104,11 +84,22 @@ Download on WiFi, experience offline
 
 ## Secure
 
-Progressive Web Apps can only be run and installed over a secure connection
+ - Progressive Web Apps can only be run and installed over a secure connection
+ - Service workers work like a proxy and can completely change the response to any request
+ - This makes sure that any service worker that gets installed hasn't been tampered with
 
-Service workers work like a proxy and can completely change the response to any request
+</section>
+</section>
 
-This makes sure that any service worker that gets installed hasn't been tampered with
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="">
+
+## App Shell
+
+ - The structural elements of the application
+ - Doesn't include content
 
 </section>
 </section>
@@ -120,13 +111,11 @@ This makes sure that any service worker that gets installed hasn't been tampered
 
 ## Service Workers
 
-Control how requests are routed. Sit between browser and server.
-
-They don't rely on the website being open, you can define what events wake it up
-
-Push messages can wake up a service worker
-
-Limited to scope dictated by the folder the file is in
+ - Control how requests are routed. Sit between browser and server.
+ - They don't rely on the website being open, you can define what events wake it up
+ - Push messages can wake up a service worker
+ - Limited to scope dictated by the folder the file is in
+ - Can be added without affecting unsupported browsers
 
 ---
 
@@ -187,11 +176,34 @@ self.addEventListener('fetch', function(e) {
 
 ## Manifest
 
-Control how app appears to the user on the phone
+ - Control how app appears to the user on the phone
+ - Control how the app launches
+ - Android will automatically detect a PWA and notify the user they can add it to their home screen
 
-Control how the app launches
+---
 
-Android will automatically detect a PWA and notify the user they can add it to their home screen
+## Link to the manifest
+
+```html
+< link rel="manifest" href="/manifest.json" >
+```
+
+---
+
+```json
+{
+  "name": "Superhero",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "Wear a cape, change the world",
+  "icons": [{
+    "src": "images/homescreen48.png",
+    "sizes": "48x48",
+    "type": "image/png"
+  }]
+}
+```
 
 </section>
 </section>
@@ -199,13 +211,25 @@ Android will automatically detect a PWA and notify the user they can add it to t
 <!-- =========================================================== -->
 
 <section>
-<section data-markdown data-separator="---" data-background="">
+<section data-markdown data-separator="---" data-background="2.jpg">
 
-## App Shell
+## Best of the Web, and best of apps
 
-The minimal amount of code needed to show meaningful content to the user
+1. Reliability
 
-This can also include cached data saved inside a local database
+Integral code installed on the device
+
+2. Speed
+
+Fast Startup, customisable cacheing and offline
+
+3. User Engagement
+
+Traditionally native app features like push notifications and GPS
+
+4. Integrated
+
+Shows on the home screen and loading as a full-screen app
 
 </section>
 </section>
@@ -213,13 +237,16 @@ This can also include cached data saved inside a local database
 <!-- =========================================================== -->
 
 <section>
-<section data-markdown data-separator="---" data-background="">
-
-![udacity](udacity.png)
+<section data-markdown data-separator="---" data-background="2.jpg">
 
 ## Support
 
-  https://www.udacity.com/course/intro-to-progressive-web-apps--ud811
+![udacity](udacity.png)
+
+ - https://www.udacity.com/course/intro-to-progressive-web-apps--ud811
+ - ```bash
+  npm i -g pw-precache
+  ```
 
 </section>
 </section>

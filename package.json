@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "jekyll": "jekyll serve --drafts"
+    "jekyll": "jekyll serve -b /presentations --drafts"
   },
   "repository": {
     "type": "git",
