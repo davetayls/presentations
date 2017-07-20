@@ -1,5 +1,5 @@
 .reveal section {
-  letter-spacing: -0.05em;
+  letter-spacing: 0.01em;
 }
 
 .reveal pre {
@@ -20,8 +20,18 @@
 
 .reveal h1,
 .reveal h2 {
+  letter-spacing: -0.01em;
   text-shadow: 0 0 2px #000,
-    0 0 2px #000,
+  0 0 2px #000,
+  0 0 2px #000,
+  0 0 2px #000;
+}
+
+.reveal h3,
+.reveal p,
+.reveal li {
+  letter-spacing: 0.01em;
+  text-shadow: 0 0 2px #000,
     0 0 2px #000,
     0 0 2px #000;
 }
