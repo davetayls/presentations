@@ -18,13 +18,14 @@
 
         var playing = false;
         var tF, tT;
-        var context = new webkitAudioContext();
+        var context = new AudioContext();
         var oscillator = context.createOscillator();
+        var types = ['sine', 'square', 'sawtooth', 'triangle'];
         document.addEventListener('click', function(){
             if (!playing){
                 oscillator.connect(context.destination);
 
-                oscillator.type = 0;
+                oscillator.type = types[0];
                 oscillator.start(0);
 
                 tF = setInterval(function(){
@@ -37,7 +38,7 @@
                 var type = 0;
                 tT = setInterval(function(){
                     type = type >= 3 ? 0 : type+1;
-                    oscillator.type = type;
+                    oscillator.type = types[type];
                 }, 1000);
                 playing = true;
             } else {
