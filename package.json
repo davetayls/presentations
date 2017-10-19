@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/davetayls/presentations/issues"
   },
-  "homepage": "https://github.com/davetayls/presentations#readme"
+  "homepage": "https://github.com/davetayls/presentations#readme",
+  "dependencies": {
+    "reveal.js": "^3.5.0"
+  }
 }

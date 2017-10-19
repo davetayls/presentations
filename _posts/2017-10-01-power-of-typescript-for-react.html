@@ -1,0 +1,519 @@
+---
+title: Power of TypeScript for React
+layout: master
+description: A whistle stop tour of progressive web apps
+theme: night
+logo: ../../common/seccl.png
+---
+
+<section data-background="2.jpg">
+  <div class="title title--main">
+    <h1>{{ page.title }}</h1>
+    {% if page.subtitle %}
+    <h3>{{ page.subtitle }}</h3>
+    {% endif %}
+    <p>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="8.jpg">
+
+## Components and Contracts
+
+### The React community is very focussed on small components
+
+  * great for scaling
+  * sharing code
+  * A/B testing
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="5.jpg">
+
+# TypeScript 101
+
+---
+
+### Some simple types
+
+```javascript
+const s: string = 'string'
+const n: number = 100
+const arr: number[] = [1,2,3,4]
+const fn: (name: string) => string =
+(name: string) => `Hello ${name}`;
+```
+
+---
+
+### TypeScript can infer a lot
+
+```javascript
+const s = 'string'
+const n = 100
+const arr: number[] = [1,2,3,4]
+const fn = (name: string) => `Hello ${name}`;
+```
+
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="5.jpg">
+
+# Pure or Presentational Components
+
+---
+
+## Component props
+
+  * Define the props a component needs
+  * Specify which props are optional
+  * Be specific about the types of props
+
+---
+
+```javascript
+export interface IPersonProps {
+  // these first props are required
+  name: string;
+  age: number;
+  // the question mark here tells
+  // the compiler that the skills
+  // array is optional
+  skills?: string[];
+  // We can define a function to be
+  // called when an event happens
+  // within the component.
+  onSelectedSkill?: (skill: string) => any;
+}
+```
+
+---
+
+## Specifying Props and State
+
+```jsx
+class Person extends
+  React.Component&ltIPersonProps, IPersonState&gt; {
+  render() { /* ... */ }
+}
+```
+
+---
+
+```jsx
+render() {
+  return (
+    &lt;section&gt;
+      &lt;h2&gt;
+        My name is {this.props.name}
+      &lt;/h2&gt;
+      &lt;h3&gt;
+        I am {this.props.age} years old
+      &lt;/h3&gt;
+      &lt;h4&gt;My Skills are:&lt;/h4&gt;
+      {this.getSkills()}
+    &lt;/section&gt;
+  );
+}
+```
+
+---
+
+## Spot the potential runtime error
+
+```jsx
+getSkills() {
+  if (this.props.skills.length) {
+    const skills = this.props.skills
+      .map((skill: string, i: number) =>
+        (&lt;li key={i}>{skill}&lt;/li>)
+      );
+    return &lt;ul>{skills}&lt;/ul>;
+  }
+}
+```
+
+---
+
+## TypeScript will give the error:
+
+```javascript
+Object is possibly 'undefined'.
+(property) IPersonProps.skills: string[] | undefined
+```
+
+---
+
+## No Errors
+
+```jsx
+getSkills() {
+  if (this.props.skills && this.props.skills.length) {
+    const skills = this.props.skills
+      .map((skill: string, i: number) =>
+        (&lt;li key={i}>{skill}&lt;/li>)
+      );
+    return &lt;ul>{skills}&lt;/ul>;
+  }
+}
+```
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="">
+
+# Connected Components
+
+ - separate interfaces for props and dispatch for redux connect
+ - joining them together with intersection types
+
+---
+
+### Separating interface definitions for Props and Dispatch
+
+```js
+export interface IPersonProps {
+  name: string;
+  age: number;
+  skills?: string[];
+}
+
+// Our event related functions are
+// moved into this separate dispatch
+// interface
+export interface IPersonDispatch {
+  onSelecedSkill?: (skill: string) => any;
+}
+```
+
+---
+
+### We use the `&` to combine types.
+
+### This is called an Intersection Type
+
+```jsx
+export class Person
+  extends React.Component&lt;
+    IPersonProps & IPersonDispatch,
+    IPersonState> {
+}
+```
+
+---
+
+## Tightening generic functions
+
+The `connect` function from `react-redux` expects two functions like this
+
+```js
+type mapStateToProps =
+  (state: IAppState) => object;
+type mapDispatchToProps =
+  (dispatch: Dispatch) => object;
+```
+
+---
+
+## Tightening generic functions
+
+We now have the interfaces we need to be more specific
+
+```js
+type mapStateToProps =
+  (state: IAppState) => IPersonProps;
+type mapDispatchToProps =
+  (dispatch: Dispatch) => IPersonDispatch;
+```
+
+---
+
+```js
+export const PersonWithState = connect(
+  (state: IAppState): IPersonProps => ({
+    name: state.currentPerson.name,
+    age: state.currentPerson.age,
+    skills: state.currentPerson.skills
+  }),
+  (dispatch): IPersonDispatch => ({
+    onSelecedSkill: (skill) => {
+      dispatch(selectedSkill(skill))
+    }
+  })
+)(Person);
+```
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="">
+
+# Actions
+
+---
+
+It useful to make all actions have the same basic structure
+
+ - Generic
+ - Positive
+ - Error
+ - Any or unknown
+
+---
+
+```javascript
+// We have an action with customisable payload and meta
+export interface IGenericAction&lt;T, P, M> {
+  // Our type is a const string
+  type: T;
+  // The payload can be anything but will be
+  // specified for a particular action within
+  // the app
+  payload?: P;
+  // The meta property can be used to send
+  // further information along with the action
+  // often used by redux middleware
+  meta?: M;
+  // This is a flag to tell if the payload
+  // is an error
+  error?: boolean;
+}
+```
+
+---
+
+## Positive
+
+```csharp
+export interface IAuthenticate {
+  username: string;
+  password: string;
+}
+
+interface IAction&lt;T, P>
+  extends IGenericAction&lt;T, P, undefined> {}
+
+type AuthenticateAction =
+  IAction&lt;
+    typeof AUTHENTICATE,
+    IAuthenticate>;
+```
+
+---
+
+## Error
+
+```csharp
+interface IErrorAction&lt;T, M>
+  extends IGenericAction&lt;T, IError, M> {}
+
+type AuthenticateErrorAction =
+  IErrorAction&lt;typeof AUTHENTICATE_ERROR, ResponseError>
+```
+
+---
+
+## Any or unknown
+
+```csharp
+interface IAnyAction
+  extends IGenericAction&lt;string, any, any> {}
+```
+
+---
+
+```js
+export interface IAuthenticationState {
+  authenticating: boolean;
+}
+export function authenticateReducer(state: IAuthenticationState, action: IAnyAction) {
+  switch (action.type) {
+    case AUTHENTICATE_CREDENTIALS: return credentials(state, action);
+    default: return state;
+  }
+}
+export function credentials(state: IAuthenticationState, action: AuthenticateCredentialsAction) {
+  const {payload} = action;
+  return {
+    ...state,
+    authenticating: payload.username
+  };
+}
+```
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="">
+
+# Reducers
+
+ - Stability
+ - help planning your application
+
+How might we plan a simple application?
+
+---
+
+## Our top-level state
+
+```csharp
+interface IAppState {
+  authentication: IAuthenticationState;
+  entities: IEntitiesState;
+}
+```
+
+---
+
+## Entities
+
+We can picture our entities
+
+```csharp
+interface IEntitiesState {
+  [entityName:string]: IEntityState;
+
+  // You can define specific entities
+  // if you know of them
+  posts: IEntityState;
+  comments: IEntityState;
+  authors: IEntityState;
+}
+```
+
+---
+
+## Single Entity
+
+```csharp
+interface IEntityState&lt;E> {
+  byId: { [id: string]: E };
+  all: string[];
+}
+```
+
+---
+
+```csharp
+interface IEntitiesState {
+  // If the entity is unknown then it's
+  // properties could be anything!
+  [entityName:string]: IEntityState&lt;any>;
+
+  // For our known entity we can define that the
+  // properties will be those defined in the
+  // `IPost` interface
+  posts: IEntityState&lt;IPost>;
+  comments: IEntityState&lt;IComment>;
+  authors: IEntityState&lt;IAuthor>;
+}
+```
+
+---
+
+## What we are gaining here from all this?
+
+```js
+let posts = state.entities.posts;
+```
+
+ - TS knows the specific post properties ... like `title`
+ - TS knows a post has a title `posts.byId[id].title`.
+ - Our `IEntitiesState` will give us a form of documentation
+ - Any reducers which should return data related to the posts entity are now part of this well defined contract
+
+---
+
+## Mapping the State to Reducers
+
+```csharp
+interface IAppState {
+  authentication: IAuthState;
+}
+```
+
+Combine reducers is a function which
+
+  1. takes that same state (and an action)
+  2. returns a state of the same shape
+
+```csharp
+interface ICombineReducers {
+  authentication:
+    (state: IAuthState, action: IAnyAction) => IAuthState;
+}
+```
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="2.jpg">
+
+## Refactoring
+
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="2.jpg">
+
+## Rich Domain
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown data-separator="---" data-background="2.jpg">
+
+## Get started and help
+
+</section>
+</section>
+
+
+
+
+
+
+
+
+

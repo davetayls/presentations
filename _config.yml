@@ -1,7 +1,7 @@
 lsi: false
 live: true
+port: 4001
 permalink: /:year/:title/index.html
 exclude:
-- node_modules
 - package.json
 - grunt.js

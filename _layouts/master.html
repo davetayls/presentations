@@ -14,19 +14,19 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <link rel="stylesheet" href="../../reveal/css/reveal.min.css">
-    <link rel="stylesheet" href="../../reveal/css/theme/simple.css" id="theme">
+    <link rel="stylesheet" href="../../node_modules/reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="../../node_modules/reveal.js/css/theme/{{ page.theme }}.css" id="theme">
 
     <!-- For syntax highlighting -->
-    <link rel="stylesheet" href="../../reveal/lib/css/zenburn.css">
+    <link rel="stylesheet" href="../../node_modules/reveal.js/lib/css/zenburn.css">
 
     <!-- If the query includes 'print-pdf', use the PDF print sheet -->
     <script>
-      document.write('<link rel="stylesheet" href="../../reveal/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
+      document.write('<link rel="stylesheet" href="../../node_modules/reveal.js/css/print/' + ( window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">');
     </script>
 
     <!--[if lt IE 9]>
-    <script src="../../reveal/lib/js/html5shiv.js"></script>
+    <script src="../../node_modules/reveal.js/lib/js/html5shiv.js"></script>
     <![endif]-->
     <link rel="stylesheet" href="../../common/index.css">
   </head>
@@ -44,63 +44,161 @@
       {% endif %}
       <h1>Dave Taylor (<a href="http://davetayls.me">davetayls.me</a>)</h1>
     </div>
-    <script src="../../reveal/lib/js/head.min.js"></script>
-    <script src="../../reveal/js/reveal.min.js"></script>
+    <script src="../../node_modules/reveal.js/lib/js/head.min.js"></script>
+    <script src="../../node_modules/reveal.js/js/reveal.js"></script>
     <script>
 
       // Full list of configuration options available here:
       // https://github.com/hakimel/reveal.js#configuration
       Reveal.initialize({
+
+        markdown: {
+          gfm: true,
+          sanitize: false
+        },
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: '98%',
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // Bounds for smallest/largest possible scale to apply to content
+        minScale: 0.2,
+        maxScale: 1.5,
+
+        // Display controls in the bottom right corner
         controls: true,
+
+        // Display a presentation progress bar
         progress: true,
+
+        // Set default timing of 2 minutes per slide
+        defaultTiming: 120,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // Push each slide change to the browser history
         history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Vertical centering of slides
         center: true,
 
-        theme: '{{ page.theme }}' || Reveal.getQueryHash().theme, // available themes are in /css/theme
-        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        // Enables touch navigation on devices with touch input
+        touch: true,
 
-        // Optional libraries used to extend on reveal.js
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autolaying embedded media (video/audio/iframe)
+        // - null: Media will only autoplay if data-autoplay is present
+        // - true: All media will autoplay, regardless of individual setting
+        // - false: No media will autoplay, regardless of individual setting
+        autoPlayMedia: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: Reveal.navigateNext,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // Hides the address bar on mobile devices
+        hideAddressBar: true,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
+
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Parallax background image
+        parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+        // Parallax background size
+        parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
+
+        // Number of pixels to move the parallax background per slide
+        // - Calculated automatically unless specified
+        // - Set to 0 to disable movement along an axis
+        parallaxBackgroundHorizontal: null,
+        parallaxBackgroundVertical: null,
+
+        // The display mode that will be used to show slides
+        display: 'block',
         dependencies: [
+          // Interpret Markdown in <section> elements
           {
-            src: '../../reveal/lib/js/classList.js', condition: function() {
-            return !document.body.classList;
-          }
-          },
-          {
-            src: '../../reveal/plugin/markdown/marked.js', condition: function() {
+            src: '../../node_modules/reveal.js/plugin/markdown/marked.js', condition: function() {
             return !!document.querySelector('[data-markdown]');
           }
           },
           {
-            src: '../../reveal/plugin/markdown/markdown.js', condition: function() {
+            src: '../../node_modules/reveal.js/plugin/markdown/markdown.js', condition: function() {
             return !!document.querySelector('[data-markdown]');
           }
           },
-          {
-            src: '../../reveal/plugin/highlight/highlight.js', async: true, callback: function() {
-            hljs.initHighlightingOnLoad();
-          }
-          },
-          {
-            src: '../../reveal/plugin/zoom-js/zoom.js', async: true, condition: function() {
-            return !!document.body.classList;
-          }
-          },
-          {
-            src: '../../reveal/plugin/notes/notes.js', async: true, condition: function() {
-            return !!document.body.classList;
-          }
-          },
-          // { src: '../../reveal/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
-          {
-            src: '../../reveal/plugin/remotes/remotes.js', async: true, condition: function() {
-            return !!document.body.classList && Reveal.getQueryHash().remote;
-          }
-          }
-        ]
-      });
 
-      console.log(Reveal.getQueryHash());
+          // Syntax highlight for <code> elements
+          {
+            src: '//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js',
+            async: true,
+            callback: function() {
+              hljs.initHighlightingOnLoad();
+            }
+          },
+
+          // Speaker notes
+          { src: '../../node_modules/reveal.js/plugin/notes/notes.js', async: true }
+        ]
+
+      });
 
     </script>
 
