@@ -6,12 +6,8 @@ theme: night
 logo: ../../common/seccl.png
 ---
 
-<section data-background="2.jpg">
+<section data-background="1.jpg">
   <div class="title title--main">
-    <h1>{{ page.title }}</h1>
-    {% if page.subtitle %}
-    <h3>{{ page.subtitle }}</h3>
-    {% endif %}
     <p>
       <br />
       <br />
@@ -29,7 +25,7 @@ logo: ../../common/seccl.png
 <section>
 <section data-markdown data-separator="---" data-background="8.jpg">
 
-## Components and Contracts
+# Components and Contracts
 
 ### The React community is very focussed on small components
 
@@ -312,13 +308,15 @@ export interface IGenericAction&lt;T, P, M> {
 ## Positive
 
 ```csharp
+interface IAction&lt;T, P>
+  extends IGenericAction&lt;T, P, undefined> {}
+
 export interface IAuthenticate {
   username: string;
   password: string;
 }
 
-interface IAction&lt;T, P>
-  extends IGenericAction&lt;T, P, undefined> {}
+const AUTHENTICATE = 'AUTHENTICATE';
 
 type AuthenticateAction =
   IAction&lt;
@@ -331,8 +329,8 @@ type AuthenticateAction =
 ## Error
 
 ```csharp
-interface IErrorAction&lt;T, M>
-  extends IGenericAction&lt;T, IError, M> {}
+interface IErrorAction&lt;T, P extends IError>
+  extends IGenericAction&lt;T, P, any> {}
 
 type AuthenticateErrorAction =
   IErrorAction&lt;typeof AUTHENTICATE_ERROR, ResponseError>
@@ -353,13 +351,15 @@ interface IAnyAction
 export interface IAuthenticationState {
   authenticating: boolean;
 }
+// Top level reducer
 export function authenticateReducer(state: IAuthenticationState, action: IAnyAction) {
   switch (action.type) {
-    case AUTHENTICATE_CREDENTIALS: return credentials(state, action);
+    case AUTHENTICATE: return credentials(state, action);
     default: return state;
   }
 }
-export function credentials(state: IAuthenticationState, action: AuthenticateCredentialsAction) {
+// Function reducer
+export function credentials(state: IAuthenticationState, action: AuthenticateAction) {
   const {payload} = action;
   return {
     ...state,
@@ -425,6 +425,18 @@ interface IEntityState&lt;E> {
 
 ---
 
+## Our Post structure
+
+```csharp
+interface IPost {
+  id: string;
+  title: string;
+  body: string;
+}
+```
+
+---
+
 ```csharp
 interface IEntitiesState {
   // If the entity is unknown then it's
@@ -459,8 +471,7 @@ let posts = state.entities.posts;
 
 ```csharp
 interface IAppState {
-  authentication: IAuthState;
-}
+  authentication: IAuthState; }
 ```
 
 Combine reducers is a function which
@@ -470,8 +481,37 @@ Combine reducers is a function which
 
 ```csharp
 interface ICombineReducers {
-  authentication:
-    (state: IAuthState, action: IAnyAction) => IAuthState;
+  authentication: (
+    state: IAuthState,
+    action: IAnyAction
+  ) => IAuthState;
+}
+```
+
+---
+
+# We don't have to maintain two interfaces!
+
+# 😱
+
+---
+
+## Mapped Types
+
+```csharp
+type ReducersOn<T> = {
+  // For each property P in the object T
+  // map the type to a function where
+  // the first parameter takes state of the same type T[P]
+  // and returns the same type T[P]
+  [P in keyof T]: (
+    state: T[P],
+    action: IAnyAction
+  ) => T[P];
+};
+// And then we can declare our root state object
+const rootState: ReducersOn<IAppState> = {
+  authentication: authenticationReducer,
 }
 ```
 
@@ -481,10 +521,100 @@ interface ICombineReducers {
 <!-- =========================================================== -->
 
 <section>
-<section data-markdown data-separator="---" data-background="2.jpg">
+<section data-markdown
+         data-timing="300"
+         data-separator="---"
+         data-separator-notes="^Notes:"
+         data-background="">
 
-## Refactoring
+# Refactoring
 
+---
+
+## Contrived Reducer
+
+```js
+export function calculateTotalsReducer(
+    state: IAppState,
+    action: ChangePlayerAction
+  ): IAppState {
+    const { playerTurn, stats } = state;
+    const player = getPlayer(playerTurn);
+    return {
+      ...state,
+      totalsMessage: `Player ${player.name} has ${stats.roomA + stats.roomB} score across all rooms`
+    };
+  }
+```
+
+Notes:
+`playerTurn` is a number here so `getPlayer` grabs the player
+details from somewhere else
+
+---
+
+We convert our playerTurn from a simple number to an object
+
+![Refactor our playerTurn to include id](07-react-refactoring-player-turn.gif)
+
+Notes:
+We get an error when we call `getPlayer` with the `playerTurn` from the state.
+
+---
+
+Error for our reducer because our action is supplying a number
+
+![Refactor our playerTurn to include id](07-react-refactoring-player-turn-state.png)
+
+Notes:
+We will look at each line in the error log next
+
+---
+
+The object type in quotes does not match `IAppState`.
+
+```bash
+index.ts(51,3): error TS2322:
+  Type '{ playerTurn: number | undefined; stats: IStats;
+          totalsMessage: string; }'
+  is not assignable to type 'IAppState'.
+```
+
+---
+
+The object does not match `IAppState` because of the `playerTurn` property.
+
+```bash
+Types of property 'playerTurn' are incompatible.
+```
+
+The `playerTurn` property doesn't match because:
+
+you're trying to set it to `number | undefined`
+
+when `IAppState` wants an `IPlayerTurnState`.
+
+```bash
+Type 'number | undefined' is not assignable to type 'IPlayerTurnState'.
+Type 'undefined' is not assignable to type 'IPlayerTurnState'.
+```
+
+---
+
+We fix the change player reducer ...
+
+```csharp
+return {
+  ...state,
+  playerTurn: { id: action.payload || 0 }
+}
+```
+
+---
+
+We fix the calculate totals reducer
+
+![Refactor our playerTurn to include id](07-react-refactoring-player-turn-fix.gif)
 
 </section>
 </section>
@@ -492,19 +622,26 @@ interface ICombineReducers {
 <!-- =========================================================== -->
 
 <section>
-<section data-markdown data-separator="---" data-background="2.jpg">
+<section data-background="5.jpg">
 
-## Rich Domain
+<h2>Gotchas</h2>
 
-</section>
-</section>
+<ol>
+  <li>External dependencies that are not typed</li>
+  <li>Mocks and Tests</li>
+  <li>Typing Higher Order Components like using `connect` and `withRouter`</li>
+</ol>
+<p>&nbsp;</p>
+<h2>Get Started</h2>
+<ol>
+  <li>davetayls.me has all these in more detail</li>
+  <li>Join us at Bath JS meetup.com/bathjs/</li>
+</ol>
 
-<!-- =========================================================== -->
+<p>
+</p>
 
-<section>
-<section data-markdown data-separator="---" data-background="2.jpg">
-
-## Get started and help
+<p>Come work with Seccl! We're looking for a QA Engineer</p>
 
 </section>
 </section>
