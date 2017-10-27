@@ -515,7 +515,7 @@ interface ICombineReducers {
 ## Mapped Types
 
 ```csharp
-type ReducersOn<T> = {
+type ReducersOn&lt;T> = {
   // For each property P in the object T
   // map the type to a function where
   // the first parameter takes state of the same type T[P]
@@ -526,7 +526,7 @@ type ReducersOn<T> = {
   ) => T[P];
 };
 // And then we can declare our root state object
-const rootState: ReducersOn<IAppState> = {
+const rootState: ReducersOn&lt;IAppState> = {
   authentication: authenticationReducer,
 }
 ```
