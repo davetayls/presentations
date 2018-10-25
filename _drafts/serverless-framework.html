@@ -1,0 +1,439 @@
+---
+title: Serverless Framework Development
+slideTime: 120
+autoSlide: 120000
+layout: master
+description: A whistle stop tour of progressive web apps
+theme: night
+logo: ../../common/seccl.png
+---
+
+<section data-timing="20" data-autoslide="20000" data-background="website.png">
+  <div class="title title--main">
+    <p>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </p>
+  </div>
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown
+         data-timing="100"
+         data-autoslide="100000"
+         data-separator="---"
+         data-separator-notes="^Notes:"
+         data-background="">
+
+## Intro
+
+  * Hello! I'm Dave Taylor
+  * https://davetayls.me
+  * Software Engineer for 16 years
+  * Working with digital teams across the globe
+  * Start-ups to multi-billion e-commerce
+  * Tech Lead at Seccl, 5 devs, right here in Bath
+
+
+Notes:
+
+  Hi everyone, my name is Dave.
+
+  When I was 19 I had a terrible job, I ended up throwing
+  bluetac at my computer screen for fun.
+
+  I've been a software engineer for the last 16 years
+  and I'm currently the Tech lead at Seccl in Bath.
+  We're a small start up company, 5 devs on my team.
+
+  I'm here to talk about Serverless, so, why might you be here?
+
+  * quite a big shift to the way people release that's only become viable within the last few years
+  * massive risk to take something on
+  * new stuff is hard and really painful, this has been no exception to the rule
+  * there's no guarantee of success, but without trying and risking you'll never know
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown
+         data-separator="---"
+         data-timing="20"
+         data-autoslide="20000"
+         data-separator-notes="^Notes:"
+         data-background="">
+
+## So this is what I hope you'll get out of today!
+
+  * What have we achieved at Seccl?
+  * What are the pinch points?
+  * Who is this for?
+
+Thanks for taking time out to come and hear me, here we go!
+
+🚀
+
+</section>
+</section>
+<!-- =========================================================== -->
+
+<section>
+<section data-markdown
+         data-separator="---"
+         data-timing="80"
+         data-autoslide="80000"
+         data-separator-notes="^Notes:"
+         data-background="">
+
+## What is Serverless Framework
+
+Infrastructure as code
+
+Simplified deployment of separate functions
+
+Provider agnostic
+
+Notes:
+
+
+  Serverless framework is an open-source cli for building
+  and deploying serverless applications
+
+  Serverless applications are ones where you don't manage any of
+  your own infrastructure
+
+  It allows you to define the infrastructure you need your
+  code to run on alongside the application code itself
+  
+  Your provider will deal with connecting everything up.
+
+  Serverless Framework isn't tied to any particular provider,
+  you can deploy to Google Cloud, AWS, Azure, IBM and Kubernetes
+
+
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section
+    data-markdown
+    data-separator="---"
+    data-timing="120"
+    data-autoslide="120000"
+    data-separator-notes="^Notes:"
+    data-background="5.jpg">
+
+## What have we achieved
+
+Seccl is a startup in Bath pioneering a new breed
+of digital services for wealth management
+
+* Node.js, TypeScript, React, Express APIs
+* Serverless Framework on AWS
+* APIs, pubsub, queues, functions, static websites, cdn
+* ## 90% of our infrastructure (and rising) is controlled by code!
+  
+Notes:
+
+  We are a startup based in Bath pioneering a new breed of
+  digital services for wealth management.
+
+  With our little team we work with Serverless Framework to deploy
+  Node.js applications to our AWS cloud.
+
+  We deploy a tonne of things through a simple text config
+
+  - APIs and their endpoints
+  - Pub Sub events
+  - Queues and their Job processors
+  - Functions
+  - Static websites and React apps
+  - CDN configuration
+
+  We use Node.js and TypeScript across most of our codebase
+
+  Serverless allows custom plugins to be added which are not
+  too hard to get going with.
+
+  We tag and package our deployments, with our dev team of 5
+  we deploy 29 serverless projects across 4 products at least
+  once a week and a full deployment of our stack takes about an
+  hour and this is decreasing as we optimise our tooling
+
+  90% of our infrastructure is controlled by code and that is
+  slowly rising.
+
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section
+  data-markdown
+  data-separator="---"
+  data-timing="30"
+  data-autoslide="30000"
+  data-separator-notes="^Notes:"
+  data-background="5.jpg">
+
+## Development Lifecycle
+Notes:
+
+  So let's look at a simple development lifecycle
+
+### Configure
+
+```
+service:
+  name: helloEverybody
+provider:
+  name: aws
+functions:
+  helloWorld:
+    handler: index.handler
+```
+
+### Deploy
+
+```
+sls deploy
+```
+
+Notes:
+
+  We configure our Serverless service through a yaml config
+
+  Define our provider and any functions which need to be deployed
+
+---
+  
+```
+Serverless: Uploading CloudFormation file to S3...
+Serverless: Uploading artifacts...
+Serverless: Validating template...
+Serverless: Updating Stack...
+Serverless: Checking Stack update progress...
+..................
+Serverless: Stack update finished...
+Service Information
+service: pfolio-api
+stage: staging
+region: eu-west-1
+stack: pfolio-api-staging
+endpoints:
+  ANY - https://xyz.execute-api.eu-west-1.amazonaws.com/staging
+  ANY - https://xyz.execute-api.eu-west-1.amazonaws.com/staging/{proxy+}
+functions:
+  app: pfolio-api-staging-app
+```
+
+Notes:
+
+  In AWS, what this has done is created a cloud formation template
+  for our project.
+
+  Cloud Formation is AWS service for declaratively defining your
+  infrastructure as code
+
+  It is clever enough to diff changes when you update the template
+  and update your infrastructure with minimal side-effects
+  
+---
+  
+### Deploy a function
+
+```
+sls deploy function -f helloWorld
+```
+
+### Invoke a function and log the output
+
+```
+serverless invoke -f hello -l
+```
+
+Notes:
+
+  We can also deploy individual functions and see their logs
+
+---
+
+### Cleanup
+  
+```
+serverless remove
+```
+
+Notes:
+
+  And when we are finished, we can clean it all up.
+
+</section>
+</section>
+<!-- =========================================================== -->
+
+<section>
+<section
+  data-markdown
+  data-separator="---"
+  data-timing="120"
+  data-autoslide="120000"
+  data-separator-notes="^Notes:"
+  data-background="5.jpg">
+  
+# What are the pinch points
+
+How easy is it actually?
+
+Notes:
+
+  Here's the rub! There has been pain
+
+  Deployment is needed to fully test end-to-end and that can slow things down
+
+  Our workflow is heavily unit test focused so this helps but when
+  it gets to testing the integration in our dev environments you do have
+  to deploy.
+
+  The offline capabilities aren't a silver bullet, when you start to link
+  functions together you could still have some functions running in the cloud
+  and some locally
+
+  What about lambda?
+
+  - we use aws and so that means lambda
+  - building compiled code to run in a different architecture
+  - Cold start when you run lamda inside a VPC is really painful (up to 9 secs)
+  - When it goes wrong, your head can explode as to where to start looking
+  - Sometimes it's completely out of your ability to fix
+
+</section>
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section
+  data-markdown
+  data-separator="---"
+  data-timing="40"
+  data-autoslide="40000"
+  data-separator-notes="^Notes:"
+  data-background="5.jpg">
+
+# Who is this for
+
+# 👍
+
+  - For any application logic which can be easily spun up, and then powered down
+  - It works really well for APIs which talk to a database or other APIs
+  - It works great for a micro-service like architecture
+  - For teams with little devops specialist skills
+
+Notes:
+
+For any application logic which can be easily spun up, and then powered down
+
+It works really well for APIs which talk to a database or other APIs
+
+It works great for a micro-service like architecture
+
+If you have no devops person, there is no infrastructure to worry about which is a MASSIVE weight off your mind
+
+---
+
+# 💩
+
+ - You can't be afraid of a learning-curve
+ - You can't work with a full framework like Rails
+ - For someone who wants a silver bullet and a holiday in Hawaii
+
+
+Notes:
+
+You do need to be willing to face the learning curve, it's young so there are still a lot
+of confusing answers out there and different ways of doing the same thing.
+
+If you want to work with a "monolith" framework like rails then it won't suit you
+
+You do swap complexities and problems for others so you won't be getting that holiday
+in hawaii as quick as you'd like
+
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section>
+<section
+  data-markdown
+  data-separator="---"
+  data-timing="120"
+  data-autoslide="120000"
+  data-separator-notes="^Notes:"
+  data-background="5.jpg">
+  
+# Roundup
+
+  💪 Infrastructure as Code
+
+  💪 Replica environments
+
+  😱 Everything is separated. It's different complexity
+
+  😱 Slow cold starts
+
+  💪 No maintaining hardware
+
+  💪 Serverless plugins to fill the gaps
+
+Notes:
+
+  Sum up
+  we've done some cool stuff
+  it's been painful but it's also helped
+  you need to think, is this for you
+
+</section>
+</section>
+
+<!-- =========================================================== -->
+
+<section
+    data-timing="20"
+    data-background="website.png">
+  <div class="title title--main">
+    <p>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </p>
+  </div>
+</section>
+</section>
+
+
+
+

@@ -76,8 +76,19 @@
         // Display a presentation progress bar
         progress: true,
 
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: {{ page.autoSlide | default: 0 }},
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: Reveal.navigateNext,
+
         // Set default timing of 2 minutes per slide
-        defaultTiming: 120,
+        defaultTiming: {{ page.slideTime | default: 120 }},
 
         // Display the page number of the current slide
         slideNumber: false,
@@ -125,17 +136,6 @@
         // - true: All media will autoplay, regardless of individual setting
         // - false: No media will autoplay, regardless of individual setting
         autoPlayMedia: null,
-
-        // Number of milliseconds between automatically proceeding to the
-        // next slide, disabled when set to 0, this value can be overwritten
-        // by using a data-autoslide attribute on your slides
-        autoSlide: 0,
-
-        // Stop auto-sliding after user input
-        autoSlideStoppable: true,
-
-        // Use this method for navigation when auto-sliding
-        autoSlideMethod: Reveal.navigateNext,
 
         // Enable slide navigation via mouse wheel
         mouseWheel: false,

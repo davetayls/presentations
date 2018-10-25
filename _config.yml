@@ -3,5 +3,6 @@ live: true
 port: 4001
 permalink: /:year/:title/index.html
 exclude:
-- package.json
-- grunt.js
+  - .idea/
+  - package.json
+  - grunt.js
