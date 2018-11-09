@@ -193,9 +193,6 @@ Notes:
   data-background="5.jpg">
 
 ## Development Lifecycle
-Notes:
-
-  So let's look at a simple development lifecycle
 
 ### Configure
 
@@ -215,11 +212,6 @@ functions:
 sls deploy
 ```
 
-Notes:
-
-  We configure our Serverless service through a yaml config
-
-  Define our provider and any functions which need to be deployed
 
 ---
   
@@ -243,17 +235,7 @@ functions:
   app: pfolio-api-staging-app
 ```
 
-Notes:
 
-  In AWS, what this has done is created a cloud formation template
-  for our project.
-
-  Cloud Formation is AWS service for declaratively defining your
-  infrastructure as code
-
-  It is clever enough to diff changes when you update the template
-  and update your infrastructure with minimal side-effects
-  
 ---
   
 ### Deploy a function
@@ -268,9 +250,6 @@ sls deploy function -f helloWorld
 serverless invoke -f hello -l
 ```
 
-Notes:
-
-  We can also deploy individual functions and see their logs
 
 ---
 
@@ -281,6 +260,23 @@ serverless remove
 ```
 
 Notes:
+
+  So let's look at a simple development lifecycle
+
+  We configure our Serverless service through a yaml config
+
+  Define our provider and any functions which need to be deployed
+
+  In AWS, what this has done is created a cloud formation template
+  for our project.
+
+  Cloud Formation is AWS service for declaratively defining your
+  infrastructure as code
+
+  It is clever enough to diff changes when you update the template
+  and update your infrastructure with minimal side-effects
+
+  We can also deploy individual functions and see their logs
 
   And when we are finished, we can clean it all up.
 
