@@ -1,6 +1,6 @@
 lsi: false
 live: true
-port: 4001
+port: 4002
 permalink: /:year/:title/index.html
 exclude:
   - .idea/
